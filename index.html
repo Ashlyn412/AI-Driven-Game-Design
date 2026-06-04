@@ -1,0 +1,2468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Driven Game Design Systems | Ashlyn_Liang</title>
+  <meta
+    name="description"
+    content="A single-page Design Thinking project website exploring AI-driven game design systems by Ashlyn_Liang."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <style>
+    :root {
+      --prussian-blue: #003153;
+      --hermes-orange: #FF6600;
+      --tiffany-blue: #0ABAB5;
+      --off-white: #FAFAF7;
+      --warm-gray: #6B6B6B;
+      --pure-white: #FFFFFF;
+      --blue-soft: rgba(0, 49, 83, 0.08);
+      --blue-line: rgba(0, 49, 83, 0.16);
+      --orange-mid: rgba(255, 102, 0, 0.72);
+      --tiffany-line: rgba(10, 186, 181, 0.42);
+      --shadow-soft: 0 10px 24px rgba(0, 49, 83, 0.06);
+      --radius-card: 8px;
+      --content-width: 1220px;
+      --nav-height: 78px;
+      --transition: 300ms ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: var(--off-white);
+      color: var(--prussian-blue);
+      line-height: 1.72;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+
+    img,
+    svg,
+    canvas {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    a,
+    input,
+    textarea,
+    select {
+      transition:
+        color var(--transition),
+        background-color var(--transition),
+        border-color var(--transition),
+        transform var(--transition),
+        opacity var(--transition);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--tiffany-blue);
+      outline-offset: 3px;
+    }
+
+    section[id],
+    article[id],
+    footer[id] {
+      scroll-margin-top: 108px;
+    }
+
+    .container {
+      width: min(100% - 64px, var(--content-width));
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      font-family: "Fraunces", serif;
+      font-size: clamp(2.4rem, 4.5vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.02;
+    }
+
+    .section-intro {
+      max-width: 760px;
+      color: var(--warm-gray);
+      font-size: 1.05rem;
+      margin-top: 20px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition:
+        opacity 300ms ease-out,
+        transform 300ms ease-out;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+    }
+
+    .navbar.scrolled {
+      background: var(--prussian-blue);
+      border-color: rgba(250, 250, 247, 0.12);
+    }
+
+    .nav-inner {
+      width: min(100% - 48px, var(--content-width));
+      min-height: var(--nav-height);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .brand {
+      color: var(--off-white);
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .brand span {
+      color: var(--hermes-orange);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-link {
+      position: relative;
+      color: rgba(250, 250, 247, 0.82);
+      font-size: 0.98rem;
+      font-weight: 500;
+      padding: 6px 0;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 100%;
+      height: 1px;
+      background: var(--hermes-orange);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform var(--transition);
+    }
+
+    .nav-link:hover,
+    .nav-link:focus-visible {
+      color: var(--tiffany-blue);
+    }
+
+    .nav-link.is-active {
+      color: var(--off-white);
+    }
+
+    .nav-link.is-active::after {
+      transform: scaleX(1);
+    }
+
+    .nav-dropdown {
+      position: relative;
+    }
+
+    .nav-dropdown-button {
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .nav-dropdown-panel {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 12px);
+      min-width: 240px;
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+      border: 1px solid rgba(250, 250, 247, 0.14);
+      border-radius: var(--radius-card);
+      background: var(--prussian-blue);
+      box-shadow: 0 18px 38px rgba(0, 49, 83, 0.22);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(6px);
+      transition:
+        opacity var(--transition),
+        transform var(--transition),
+        visibility var(--transition);
+    }
+
+    .nav-dropdown:hover .nav-dropdown-panel,
+    .nav-dropdown:focus-within .nav-dropdown-panel {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .nav-dropdown-panel a {
+      color: rgba(250, 250, 247, 0.78);
+      font-size: 0.9rem;
+      line-height: 1.35;
+      padding: 8px 10px;
+      border-radius: 6px;
+    }
+
+    .nav-dropdown-panel a:hover,
+    .nav-dropdown-panel a:focus-visible {
+      color: var(--tiffany-blue);
+      background: rgba(250, 250, 247, 0.04);
+    }
+
+    .nav-contact {
+      font-size: 0.98rem;
+      opacity: 1;
+      color: rgba(250, 250, 247, 0.82);
+    }
+
+    .nav-contact:hover,
+    .nav-contact:focus-visible {
+      color: var(--tiffany-blue);
+    }
+
+    .mobile-break {
+      display: none;
+    }
+
+    .screen {
+      position: relative;
+    }
+
+    .screen-home {
+      background: var(--prussian-blue);
+      color: var(--off-white);
+    }
+ 
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      align-items: center;
+      padding: calc(var(--nav-height) + 72px) 0 96px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+      gap: 64px;
+      align-items: end;
+    }
+
+    .hero-copy {
+      max-width: 760px;
+      min-width: 0;
+    }
+
+    .hero .eyebrow {
+      color: var(--tiffany-blue);
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-family: "Fraunces", serif;
+      font-size: clamp(4rem, 8vw, 6rem);
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      line-height: 0.95;
+    }
+
+    .hero-title .orange {
+      color: var(--hermes-orange);
+    }
+
+    .hero-subtitle {
+      max-width: 640px;
+      margin-top: 28px;
+      font-size: 1.14rem;
+      color: rgba(250, 250, 247, 0.8);
+    }
+
+    .personal-tag {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      max-width: 700px;
+      color: rgba(250, 250, 247, 0.75);
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    .personal-tag span {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .personal-tag strong {
+      color: rgba(250, 250, 247, 0.94);
+      font-weight: 700;
+    }
+
+    .hero-actions {
+      margin-top: 36px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 0 24px;
+      border: 1px solid var(--hermes-orange);
+      background: var(--hermes-orange);
+      color: var(--off-white);
+      font-size: 0.98rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      border-radius: 6px;
+    }
+
+    .cta-button:hover,
+    .cta-button:focus-visible {
+      background: var(--tiffany-blue);
+      border-color: var(--tiffany-blue);
+      color: var(--prussian-blue);
+      transform: translateY(-1px);
+    }
+
+    .hero-note {
+      padding-left: 24px;
+      border-left: 1px solid rgba(250, 250, 247, 0.18);
+      max-width: 320px;
+      color: rgba(250, 250, 247, 0.76);
+      font-size: 0.95rem;
+    }
+
+    .hero-panel {
+      padding: 28px;
+      border: 1px solid rgba(250, 250, 247, 0.14);
+      border-radius: var(--radius-card);
+      background: rgba(250, 250, 247, 0.03);
+      min-width: 0;
+    }
+
+    .hero-panel-title {
+      font-family: "Fraunces", serif;
+      font-size: 1.35rem;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .hero-panel-list {
+      display: grid;
+      gap: 14px;
+      list-style: none;
+    }
+
+    .hero-panel-list li {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 14px;
+      align-items: start;
+      color: rgba(250, 250, 247, 0.8);
+      font-size: 0.98rem;
+    }
+
+    .hero-panel-index {
+      color: var(--hermes-orange);
+      font-family: "Fraunces", serif;
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    .flow-band {
+      background: var(--off-white);
+      color: var(--prussian-blue);
+      padding: 88px 0 72px;
+      border-top: 1px solid rgba(250, 250, 247, 0.1);
+    }
+
+    .flow-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 42px;
+    }
+
+    .flow-header h2 {
+      font-family: "Fraunces", serif;
+      font-size: clamp(2rem, 3.2vw, 3rem);
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+    }
+
+    .flow-header p {
+      max-width: 520px;
+      color: var(--warm-gray);
+      font-size: 1rem;
+    }
+
+    .flow-diagram {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 60px minmax(0, 1fr) 60px minmax(0, 1fr) 60px minmax(0, 1fr);
+      align-items: stretch;
+      gap: 0;
+    }
+
+    .flow-step {
+      min-height: 196px;
+      padding: 28px;
+      border: 1px solid var(--blue-line);
+      border-radius: var(--radius-card);
+      background: var(--pure-white);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .flow-step-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .flow-step-index {
+      font-family: "Fraunces", serif;
+      font-size: 1.6rem;
+      color: var(--hermes-orange);
+      line-height: 1;
+    }
+
+    .flow-step-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+    }
+
+    .flow-step h3 {
+      font-family: "Fraunces", serif;
+      font-size: 1.45rem;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+
+    .flow-step p {
+      font-size: 0.98rem;
+      color: var(--warm-gray);
+    }
+
+    .flow-arrow {
+      align-self: center;
+      justify-self: center;
+      width: 60px;
+      height: 18px;
+      color: var(--tiffany-blue);
+    }
+
+    .meta-strip {
+      background: var(--prussian-blue);
+      padding: 18px 0;
+      border-top: 1px solid rgba(250, 250, 247, 0.08);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .meta-item {
+      color: rgba(250, 250, 247, 0.82);
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid rgba(250, 250, 247, 0.12);
+      padding-top: 14px;
+    }
+
+    .meta-item span:first-child {
+      color: rgba(250, 250, 247, 0.56);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .screen-system {
+      padding: 120px 0;
+      background: var(--off-white);
+    }
+
+    .system-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
+      gap: 64px;
+      align-items: start;
+      margin-bottom: 64px;
+    }
+
+    .system-header-note {
+      padding-top: 10px;
+      color: var(--warm-gray);
+      font-size: 1rem;
+    }
+
+    .system-layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 64px;
+      align-items: start;
+    }
+
+    .system-toc {
+      position: sticky;
+      top: 104px;
+      padding: 22px;
+      background: var(--pure-white);
+      border: 1px solid var(--blue-line);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .system-toc h3 {
+      font-family: "Fraunces", serif;
+      font-size: 1.35rem;
+      margin-bottom: 18px;
+      line-height: 1.15;
+    }
+
+    .system-toc-links {
+      display: grid;
+      gap: 10px;
+    }
+
+    .system-toc-link {
+      padding: 10px 0 10px 14px;
+      border-left: 1px solid var(--blue-line);
+      color: var(--warm-gray);
+      font-size: 0.96rem;
+      line-height: 1.45;
+    }
+
+    .system-toc-link:hover,
+    .system-toc-link:focus-visible {
+      color: var(--tiffany-blue);
+      border-color: var(--tiffany-blue);
+    }
+
+    .system-toc-link.is-active {
+      color: var(--prussian-blue);
+      border-color: var(--hermes-orange);
+      font-weight: 600;
+    }
+
+    .system-content {
+      display: grid;
+      gap: 58px;
+    }
+
+    .section-rule {
+      height: 1px;
+      border: 0;
+      background: var(--tiffany-line);
+    }
+
+    .system-section {
+      display: grid;
+      gap: 28px;
+    }
+
+    .system-section-header .eyebrow {
+      color: var(--hermes-orange);
+      margin-bottom: 12px;
+    }
+
+    .system-section h2 {
+      font-family: "Fraunces", serif;
+      font-size: clamp(2rem, 3.2vw, 3rem);
+      font-weight: 700;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      color: var(--prussian-blue);
+    }
+
+    .system-section-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 240px;
+      gap: 44px;
+      align-items: start;
+    }
+
+    .system-copy {
+      display: grid;
+      gap: 20px;
+      color: var(--warm-gray);
+      font-size: 1.04rem;
+    }
+
+    .pull-quote {
+      color: var(--hermes-orange);
+      font-family: "Fraunces", serif;
+      font-size: clamp(1.65rem, 2.4vw, 2.4rem);
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      border-left: 1px solid var(--orange-mid);
+      padding-left: 20px;
+      margin-top: 6px;
+    }
+
+    .section-aside-note {
+      margin-top: 18px;
+      color: var(--warm-gray);
+      font-size: 0.95rem;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .metric-chip {
+      padding: 18px 16px;
+      background: var(--pure-white);
+      border: 1px solid var(--blue-line);
+      border-radius: 6px;
+      min-height: 108px;
+    }
+
+    .metric-chip h4 {
+      font-family: "Fraunces", serif;
+      font-size: 1.05rem;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .metric-chip p {
+      color: var(--warm-gray);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .screen-insights {
+      padding: 120px 0 132px;
+      background: var(--off-white);
+    }
+
+    .insights-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 0.7fr);
+      gap: 48px;
+      align-items: end;
+      margin-bottom: 48px;
+    }
+
+    .insights-note {
+      color: var(--warm-gray);
+      font-size: 0.98rem;
+      max-width: 400px;
+      justify-self: end;
+    }
+
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 36px;
+    }
+
+    .kpi-card {
+      padding: 24px;
+      background: var(--pure-white);
+      border: 1px solid var(--blue-line);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-soft);
+      min-height: 154px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .kpi-number {
+      font-family: "Fraunces", serif;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      line-height: 0.95;
+      color: var(--hermes-orange);
+      letter-spacing: -0.05em;
+    }
+
+    .kpi-label {
+      color: var(--prussian-blue);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .chart-card {
+      padding: 26px 26px 22px;
+      background: var(--pure-white);
+      border: 1px solid var(--blue-line);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      gap: 18px;
+    }
+
+    .chart-head {
+      display: grid;
+      gap: 8px;
+    }
+
+    .chart-head h3 {
+      font-family: "Fraunces", serif;
+      font-size: 1.5rem;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: var(--prussian-blue);
+    }
+
+    .chart-caption {
+      color: var(--warm-gray);
+      font-size: 0.95rem;
+    }
+
+    .chart-wrap {
+      position: relative;
+      min-height: 320px;
+    }
+
+    .chart-wrap canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .screen-research,
+    .screen-bridge,
+    .screen-contribution,
+    .screen-references,
+    .screen-limitations,
+    .screen-future {
+      padding: 120px 0;
+      background: var(--off-white);
+    }
+
+    .content-grid,
+    .contribution-grid,
+    .limitations-grid,
+    .timeline-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .content-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .content-grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .contribution-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .limitations-grid,
+    .timeline-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .content-card,
+    .contribution-card,
+    .reference-item,
+    .timeline-card {
+      background: var(--pure-white);
+      border: 1px solid var(--blue-line);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .content-card,
+    .contribution-card,
+    .timeline-card {
+      padding: 24px;
+    }
+
+    .content-card {
+      min-height: 272px;
+    }
+
+    .contribution-card {
+      min-height: 190px;
+    }
+
+    .content-card h3,
+    .contribution-card h3,
+    .timeline-card h3 {
+      font-family: "Fraunces", serif;
+      font-size: 1.28rem;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      color: var(--prussian-blue);
+    }
+
+    .content-card p,
+    .contribution-card p,
+    .timeline-card p {
+      margin-top: 12px;
+      color: var(--warm-gray);
+      font-size: 0.94rem;
+      line-height: 1.6;
+    }
+
+    .card-label {
+      display: inline-block;
+      margin-bottom: 12px;
+      color: var(--hermes-orange);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .data-note {
+      margin: -20px 0 34px;
+      padding: 14px 16px;
+      border: 1px solid var(--blue-line);
+      border-radius: 6px;
+      background: rgba(0, 49, 83, 0.04);
+      color: var(--warm-gray);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    .references-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .reference-item {
+      padding: 15px 18px;
+      color: var(--warm-gray);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .reference-item strong {
+      color: var(--hermes-orange);
+    }
+
+    .contact-section {
+      padding: 86px 0 34px;
+      background: var(--prussian-blue);
+      color: var(--off-white);
+      border-top: 1px solid rgba(250, 250, 247, 0.12);
+    }
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.6fr);
+      gap: 48px;
+      align-items: start;
+    }
+
+    .contact-copy h2 {
+      color: var(--off-white);
+    }
+
+    .contact-copy p {
+      margin-top: 18px;
+      max-width: 700px;
+      color: rgba(250, 250, 247, 0.76);
+      font-size: 1rem;
+    }
+
+    .contact-card {
+      padding: 24px;
+      border: 1px solid rgba(250, 250, 247, 0.14);
+      border-radius: var(--radius-card);
+      background: rgba(250, 250, 247, 0.03);
+    }
+
+    .contact-identity {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-bottom: 18px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid rgba(250, 250, 247, 0.12);
+    }
+
+    .mosaic-mark {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3px;
+      padding: 5px;
+      border: 1px solid rgba(250, 250, 247, 0.14);
+      border-radius: 6px;
+      background: rgba(250, 250, 247, 0.04);
+      flex: 0 0 auto;
+    }
+
+    .mosaic-mark span {
+      display: block;
+      border-radius: 2px;
+      background: rgba(250, 250, 247, 0.22);
+    }
+
+    .mosaic-mark span:nth-child(2),
+    .mosaic-mark span:nth-child(7),
+    .mosaic-mark span:nth-child(12) {
+      background: var(--tiffany-blue);
+    }
+
+    .mosaic-mark span:nth-child(4),
+    .mosaic-mark span:nth-child(9),
+    .mosaic-mark span:nth-child(15) {
+      background: var(--hermes-orange);
+    }
+
+    .contact-identity strong {
+      display: block;
+      color: var(--off-white);
+      font-size: 1.02rem;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+
+    .contact-identity small {
+      display: block;
+      margin-top: 4px;
+      color: rgba(250, 250, 247, 0.62);
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 14px;
+      list-style: none;
+      font-style: normal;
+    }
+
+    .contact-list li {
+      display: grid;
+      gap: 3px;
+      color: rgba(250, 250, 247, 0.78);
+      overflow-wrap: anywhere;
+    }
+
+    .contact-list span {
+      color: rgba(250, 250, 247, 0.54);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .contact-list a {
+      color: var(--tiffany-blue);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .contact-section-links {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(250, 250, 247, 0.12);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 16px;
+      font-style: normal;
+    }
+
+    .contact-section-links span {
+      grid-column: 1 / -1;
+      color: rgba(250, 250, 247, 0.54);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .contact-section-links a {
+      color: rgba(250, 250, 247, 0.78);
+      font-size: 0.9rem;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .contact-section-links a:hover,
+    .contact-section-links a:focus-visible {
+      color: var(--tiffany-blue);
+    }
+
+    .footer-line {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(250, 250, 247, 0.12);
+      color: rgba(250, 250, 247, 0.56);
+      font-size: 0.84rem;
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .system-header,
+      .insights-header,
+      .system-layout,
+      .system-section-grid,
+      .contact-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .system-layout {
+        gap: 28px;
+      }
+
+      .system-toc {
+        position: sticky;
+        top: 82px;
+        padding: 18px;
+      }
+
+      .system-toc-links {
+        grid-template-columns: repeat(4, minmax(160px, 1fr));
+        overflow-x: auto;
+      }
+
+      .system-toc-link {
+        white-space: nowrap;
+      }
+
+      .metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .kpi-strip,
+      .charts-grid,
+      .content-grid,
+      .content-grid.two,
+      .contribution-grid,
+      .limitations-grid,
+      .timeline-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .flow-header {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .flow-diagram {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .flow-arrow {
+        width: 18px;
+        height: 44px;
+        transform: rotate(90deg);
+      }
+
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-inner {
+        width: min(100% - 32px, var(--content-width));
+      }
+
+      .nav-links {
+        gap: 18px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .container {
+        width: min(100% - 32px, var(--content-width));
+      }
+
+      .hero {
+        padding-top: calc(var(--nav-height) + 44px);
+      }
+
+      .hero-title {
+        font-size: clamp(3rem, 15vw, 4.4rem);
+      }
+
+      .hero-title .orange {
+        display: block;
+      }
+
+      .hero-copy,
+      .hero-subtitle,
+      .personal-tag,
+      .hero-note {
+        width: calc(100vw - 32px);
+        max-width: calc(100vw - 32px);
+      }
+
+      .hero-subtitle,
+      .personal-tag {
+        overflow-wrap: normal;
+        word-break: normal;
+      }
+
+      .personal-tag {
+        display: grid;
+        gap: 8px;
+      }
+
+      .personal-tag span {
+        display: block;
+        overflow-wrap: anywhere;
+      }
+
+      .hero-actions {
+        align-items: stretch;
+      }
+
+      .hero-note {
+        border-left: 0;
+        padding-left: 0;
+      }
+
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 14px 0;
+      }
+
+      .navbar {
+        background: var(--prussian-blue);
+        border-color: rgba(250, 250, 247, 0.12);
+      }
+
+      .nav-links {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, max-content);
+        justify-content: start;
+        column-gap: 48px;
+        row-gap: 8px;
+      }
+
+      .nav-dropdown-panel {
+        left: 0;
+        right: auto;
+        top: calc(100% + 8px);
+        min-width: 220px;
+        z-index: 5;
+      }
+
+      .nav-link {
+        font-size: 0.92rem;
+      }
+
+      .nav-contact {
+        font-size: 0.92rem;
+      }
+
+      .mobile-break {
+        display: block;
+      }
+
+      .metrics-grid,
+      .kpi-strip,
+      .charts-grid,
+      .content-grid,
+      .content-grid.two,
+      .contribution-grid,
+      .limitations-grid,
+      .timeline-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .chart-wrap {
+        min-height: 280px;
+      }
+
+      .screen-system,
+      .screen-insights,
+      .screen-research,
+      .screen-bridge,
+      .screen-contribution,
+      .screen-references,
+      .screen-limitations,
+      .screen-future {
+        padding-top: 96px;
+        padding-bottom: 96px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar" id="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="#home">Ashlyn_<span>Liang</span></a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a class="nav-link" data-nav-link href="#home">Home</a>
+        <a class="nav-link" data-nav-link href="#system">System</a>
+        <a class="nav-link" data-nav-link href="#insights">Insights</a>
+        <div class="nav-dropdown">
+          <button class="nav-link nav-dropdown-button" type="button" aria-haspopup="true">Others</button>
+          <div class="nav-dropdown-panel" aria-label="Other project sections">
+            <a href="#research">Research Context</a>
+            <a href="#design-rationale">Design Rationale</a>
+            <a href="#contribution">Project Ownership / My Contribution</a>
+            <a href="#insights">Insights / Dashboard</a>
+            <a href="#references">Literature &amp; Cases</a>
+            <a href="#limitations">Project Limitations</a>
+            <a href="#future-work">Future Work</a>
+          </div>
+        </div>
+        <a class="nav-link nav-contact" data-nav-link href="#contact">Contact me</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- SCREEN 1: HOMEPAGE -->
+    <section class="screen screen-home" id="home" data-screen="home">
+      <div class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy reveal">
+            <span class="eyebrow">Design Thinking Project</span>
+            <h1 class="hero-title">
+              AI-Driven Game <span class="orange">Design</span>
+            </h1>
+            <p class="hero-subtitle">
+              A systems-thinking exploration of how <br class="mobile-break">
+              machine learning reshapes <br class="mobile-break">
+              player experience, balance, <br class="mobile-break">
+              and live operations - by Ashlyn_Liang.
+            </p>
+            <div class="personal-tag" aria-label="Personal project information">
+              <span><strong>Name:</strong> Ashlyn_Liang</span>
+              <span><strong>Role:</strong> Game AI System Designer / <br class="mobile-break">Web Prototype Developer</span>
+              <span><strong>Focus:</strong> Adaptive difficulty, <br class="mobile-break">player data dashboard, <br class="mobile-break">procedural content generation</span>
+              <span><strong>Portfolio Project:</strong> AI-driven game system prototype</span>
+            </div>
+            <div class="hero-actions">
+              <a class="cta-button" href="#system">Explore the System -></a>
+              <p class="hero-note">
+                From player-controlled variables <br class="mobile-break">
+                to adaptive content generation, <br class="mobile-break">
+                the project maps AI as a design partner <br class="mobile-break">
+                rather than a black-box replacement.
+              </p>
+            </div>
+          </div>
+
+          <aside class="hero-panel reveal">
+            <h2 class="hero-panel-title">Project Frame</h2>
+            <ul class="hero-panel-list">
+              <li>
+                <span class="hero-panel-index">01</span>
+                <span>Players and designers shape input variables such as balance rules, difficulty, and economy.</span>
+              </li>
+              <li>
+                <span class="hero-panel-index">02</span>
+                <span>Machine learning models are trained on telemetry, benchmarks, and testing archives.</span>
+              </li>
+              <li>
+                <span class="hero-panel-index">03</span>
+                <span>Predictions reveal downstream effects across experience, retention, revenue, and operations.</span>
+              </li>
+              <li>
+                <span class="hero-panel-index">04</span>
+                <span>Generative systems return recommendations, content, and live-service adjustments to the game.</span>
+              </li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+
+      <div class="flow-band">
+        <div class="container">
+          <div class="flow-header reveal">
+            <div>
+              <span class="eyebrow" style="color: var(--hermes-orange);">Core Loop</span>
+              <h2>From player-facing design levers to adaptive game systems.</h2>
+            </div>
+            <p>
+              The system is organized as a continuous cycle: designers expose or tune variables,
+              models learn from evidence, predictions make trade-offs visible, and generative
+              outputs return new content and operational decisions to the live game.
+            </p>
+          </div>
+
+          <div class="flow-diagram reveal" aria-label="Four-step AI game design flow diagram">
+            <article class="flow-step">
+              <div class="flow-step-top">
+                <span class="flow-step-label">Step 1</span>
+                <span class="flow-step-index">01</span>
+              </div>
+              <div>
+                <h3>Player Variables</h3>
+                <p>
+                  Character stats, difficulty curves, economy rules, mechanics, and balance
+                  policies become measurable control surfaces.
+                </p>
+              </div>
+            </article>
+
+            <svg class="flow-arrow" viewBox="0 0 60 18" aria-hidden="true">
+              <path d="M1 9H54" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M47 2L54 9L47 16" fill="none" stroke="currentColor" stroke-width="1.4"/>
+            </svg>
+
+            <article class="flow-step">
+              <div class="flow-step-top">
+                <span class="flow-step-label">Step 2</span>
+                <span class="flow-step-index">02</span>
+              </div>
+              <div>
+                <h3>AI Training</h3>
+                <p>
+                  Match history, player behavior, balance test records, and competitive benchmarks
+                  are aligned into a game-specific training set.
+                </p>
+              </div>
+            </article>
+
+            <svg class="flow-arrow" viewBox="0 0 60 18" aria-hidden="true">
+              <path d="M1 9H54" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M47 2L54 9L47 16" fill="none" stroke="currentColor" stroke-width="1.4"/>
+            </svg>
+
+            <article class="flow-step">
+              <div class="flow-step-top">
+                <span class="flow-step-label">Step 3</span>
+                <span class="flow-step-index">03</span>
+              </div>
+              <div>
+                <h3>Prediction</h3>
+                <p>
+                  The model forecasts player experience, balance health, retention, revenue, and
+                  service performance before changes reach the full audience.
+                </p>
+              </div>
+            </article>
+
+            <svg class="flow-arrow" viewBox="0 0 60 18" aria-hidden="true">
+              <path d="M1 9H54" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M47 2L54 9L47 16" fill="none" stroke="currentColor" stroke-width="1.4"/>
+            </svg>
+
+            <article class="flow-step">
+              <div class="flow-step-top">
+                <span class="flow-step-label">Step 4</span>
+                <span class="flow-step-index">04</span>
+              </div>
+              <div>
+                <h3>Generation</h3>
+                <p>
+                  AI modifies worlds, creates levels and items, tunes matchmaking, strengthens
+                  anti-cheat systems, and personalizes quest structures.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="meta-strip">
+        <div class="container meta-grid">
+          <div class="meta-item">
+            <span>Exercise</span>
+            <span>Design Thinking Exercise 2</span>
+          </div>
+          <div class="meta-item">
+            <span>Date</span>
+            <span>April 14, 2026</span>
+          </div>
+          <div class="meta-item">
+            <span>Course</span>
+            <span>Course Name Placeholder</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESEARCH CONTEXT -->
+    <section class="screen screen-research research-context" id="research" aria-labelledby="research-title">
+      <div class="container">
+        <div class="system-header reveal">
+          <div>
+            <span class="eyebrow" style="color: var(--hermes-orange);">Research Context</span>
+            <h2 class="section-title" id="research-title">Research Context</h2>
+            <p class="section-intro">
+              This project is positioned within current discussions on adaptive difficulty, game telemetry,
+              procedural content generation, and AI-driven NPC systems.
+            </p>
+          </div>
+          <p class="system-header-note">
+            The purpose of this section is to clarify that the website is a design prototype grounded
+            in recognizable research areas and industry examples, rather than a claim of completed
+            technical equivalence.
+          </p>
+        </div>
+
+        <div class="content-grid">
+          <article class="content-card reveal">
+            <span class="card-label">Context 01</span>
+            <h3>Adaptive Difficulty</h3>
+            <p>Adaptive difficulty systems aim to keep players within a balanced challenge zone by adjusting enemy behavior, task complexity, or system feedback according to player performance. In this project, the difficulty logic is represented as a conceptual rule layer that can later be extended through reinforcement learning or player modelling.</p>
+          </article>
+          <article class="content-card reveal">
+            <span class="card-label">Context 02</span>
+            <h3>Player Data Monitoring</h3>
+            <p>The dashboard is designed around player telemetry, including completion rate, average response time, failure frequency, engagement trend, and difficulty progression. These indicators are intended to support design diagnosis rather than function as final empirical evidence.</p>
+          </article>
+          <article class="content-card reveal">
+            <span class="card-label">Context 03</span>
+            <h3>Procedural Content Generation</h3>
+            <p>Procedural content generation is treated as a system module that can produce variable missions, encounters, or scenario structures. The current website presents the design logic and interface prototype, while full generative implementation remains a future development task.</p>
+          </article>
+          <article class="content-card reveal">
+            <span class="card-label">Context 04</span>
+            <h3>Real-game AI Systems</h3>
+            <p>Recent industry prototypes such as generative NPCs and AI-assisted game development tools show how AI can support dialogue, behaviour control, asset workflows, and player-facing interaction. This project refers to these cases as design context, not as completed technical equivalence.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESIGN RATIONALE -->
+    <section class="screen screen-bridge" id="design-rationale" aria-labelledby="rationale-title">
+      <div class="container">
+        <div class="system-header reveal">
+          <div>
+            <span class="eyebrow" style="color: var(--hermes-orange);">Design Rationale</span>
+            <h2 class="section-title" id="rationale-title">Connecting interface design with credible game AI domains.</h2>
+            <p class="section-intro">
+              The page structure links design thinking to four domain questions: what is being adapted,
+              what player data supports diagnosis, what content can be generated, and which real game AI
+              systems provide comparison points.
+            </p>
+          </div>
+          <p class="system-header-note">
+            This bridge strengthens content depth without changing the original visual grammar of the
+            website: restrained typography, card-based evidence, and a dashboard that separates
+            simulated values from empirical claims.
+          </p>
+        </div>
+
+        <div class="content-grid two">
+          <article class="content-card reveal">
+            <span class="card-label">Adaptive difficulty</span>
+            <h3>Challenge as a feedback loop</h3>
+            <p>The system treats difficulty as a loop from player outcome to challenge signal, then from designer rules to adjusted encounters. This connects the prototype to dynamic difficulty adjustment research while keeping the current implementation honest as a conceptual rule layer rather than a validated reinforcement-learning model.</p>
+          </article>
+          <article class="content-card reveal">
+            <span class="card-label">Player data monitoring</span>
+            <h3>Telemetry before claims</h3>
+            <p>The dashboard prioritizes completion rate, response time, failures, engagement trend, and difficulty progression because those signals can support design diagnosis. The data note is intentionally visible so simulated values are not mistaken for completed empirical validation.</p>
+          </article>
+          <article class="content-card reveal">
+            <span class="card-label">Procedural content generation</span>
+            <h3>Generated content with constraints</h3>
+            <p>PCG is framed as governed generation: mission templates, encounter variation, item logic, and scenario structures should be constrained by player-state signals and reviewed by designers. This makes the content-generation concept credible without claiming a finished playable generator.</p>
+          </article>
+          <article class="content-card reveal">
+            <span class="card-label">Real-game AI systems</span>
+            <h3>Industry cases as benchmarks</h3>
+            <p>References to generative NPCs, conversational characters, and project-aware AI tools are used as comparison points. They strengthen the design context while the limitations section clarifies that this portfolio prototype is not technically equivalent to Ubisoft NEO NPC, NVIDIA ACE, or Unity AI.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: THE SYSTEM -->
+    <section class="screen screen-system" id="system" data-screen="system">
+      <div class="container">
+        <div class="system-header reveal">
+          <div>
+            <span class="eyebrow" style="color: var(--hermes-orange);">The System</span>
+            <h2 class="section-title">A design workflow where AI becomes part of the balancing conversation.</h2>
+            <p class="section-intro">
+              This project treats AI less as a singular tool and more as an operating layer across
+              the game lifecycle. It sits between intention and outcome: ingesting player behavior,
+              interpreting trade-offs, and returning proposals that designers can evaluate,
+              revise, and deploy with more confidence.
+            </p>
+          </div>
+          <p class="system-header-note">
+            The framework is rooted in design thinking. Inputs are defined as hypotheses, data is
+            curated as evidence, predictions become decision support, and outputs are framed as
+            prototypes for the next design cycle rather than final truths.
+          </p>
+        </div>
+
+        <div class="system-layout">
+          <aside class="system-toc reveal" aria-label="The System table of contents">
+            <h3>Contents</h3>
+            <nav class="system-toc-links">
+              <a class="system-toc-link" data-toc-link href="#player-inputs">Player Inputs</a>
+              <a class="system-toc-link" data-toc-link href="#training-model">Training the Model</a>
+              <a class="system-toc-link" data-toc-link href="#five-metrics">The Five Metrics</a>
+              <a class="system-toc-link" data-toc-link href="#generative-outputs">Generative Outputs</a>
+            </nav>
+          </aside>
+
+          <div class="system-content">
+            <article class="system-section reveal system-anchor" id="player-inputs" data-toc="player-inputs">
+              <div class="system-section-header">
+                <span class="eyebrow">01</span>
+                <h2>Player Inputs</h2>
+              </div>
+
+              <div class="system-section-grid">
+                <div class="system-copy">
+                  <p>
+                    The first layer of the system is the set of design variables that players feel
+                    directly or indirectly. Character stats define capability, difficulty tuning
+                    shapes friction, economy rules pace reward and scarcity, and gameplay mechanics
+                    determine the expressive range of play. Balance policies sit above those
+                    variables as governance: they encode what the game considers fair, viable, or
+                    strategically diverse.
+                  </p>
+                  <p>
+                    In practice, these inputs function like a collection of connected sliders rather
+                    than isolated settings. Increasing enemy health may improve challenge while also
+                    extending session length. Expanding the in-game economy can create a sense of
+                    generosity while unintentionally eroding rarity. Designers often manage these
+                    tensions through intuition, testing, and post-launch patches; the system
+                    described here turns those same tensions into structured signals that can be
+                    learned from and forecast.
+                  </p>
+                  <p>
+                    This framing is important because it keeps human authorship intact. Players
+                    still encounter authored mechanics, curated progression, and intentional worlds.
+                    AI enters at the level of pattern recognition and scenario modeling, helping
+                    teams see how one design decision might ripple through multiple systems before
+                    it reaches a live audience.
+                  </p>
+                </div>
+
+                <aside>
+                  <blockquote class="pull-quote">
+                    "In a live game, every slider is a statement about what kinds of play the studio
+                    wants to make possible."
+                  </blockquote>
+                  <p class="section-aside-note">
+                    Inputs are not only technical values; they are design intentions expressed in a
+                    measurable form.
+                  </p>
+                </aside>
+              </div>
+            </article>
+
+            <hr class="section-rule" aria-hidden="true">
+
+            <article class="system-section reveal system-anchor" id="training-model" data-toc="training-model">
+              <div class="system-section-header">
+                <span class="eyebrow">02</span>
+                <h2>Training the Model</h2>
+              </div>
+
+              <div class="system-section-grid">
+                <div class="system-copy">
+                  <p>
+                    The model is trained on game-specific datasets that capture both moment-to-moment
+                    play and longer-term platform behavior. Match history reveals tactical outcomes
+                    and pacing. Player behavior logs provide traces of movement, spending, churn
+                    risk, session length, and content preference. Balance test records preserve the
+                    internal experimentation that happened before launch, while competitive
+                    benchmarks show how top-level play exposes dominant strategies and edge cases.
+                  </p>
+                  <p>
+                    These sources only become useful once they are aligned around the same design
+                    questions. A balance patch cannot be understood through win rate alone if it
+                    also changes average session time, sentiment, or queue quality. Training,
+                    therefore, includes cleaning historical records, standardizing event labels, and
+                    mapping design changes to observable results. The goal is not just prediction
+                    accuracy; it is contextual accuracy, where the system understands which signals
+                    belong to progression, competition, monetization, or service health.
+                  </p>
+                  <p>
+                    There is also a methodological discipline here. AI benefits from consistent
+                    telemetry, but design teams benefit from explicit hypotheses. By pairing records
+                    of what changed with records of what happened next, the workflow turns messy live
+                    operations into a library of evidence the model can generalize from.
+                  </p>
+                </div>
+
+                <aside>
+                  <blockquote class="pull-quote">
+                    "The model matters less than the discipline of turning messy play traces into
+                    comparable evidence."
+                  </blockquote>
+                  <p class="section-aside-note">
+                    Training quality depends on how clearly the team defines the relationship
+                    between a design intervention and its downstream effect.
+                  </p>
+                </aside>
+              </div>
+            </article>
+
+            <hr class="section-rule" aria-hidden="true">
+
+            <article class="system-section reveal system-anchor" id="five-metrics" data-toc="five-metrics">
+              <div class="system-section-header">
+                <span class="eyebrow">03</span>
+                <h2>The Five Metrics</h2>
+              </div>
+
+              <div class="system-section-grid">
+                <div class="system-copy">
+                  <p>
+                    The predictive center of the workflow is organized around five core game
+                    metrics: player experience, game balance, player retention, game revenue, and
+                    service &amp; operations. Together, these metrics provide a broad but actionable
+                    picture of whether a change is likely to improve the game holistically or merely
+                    optimize one area at the expense of another.
+                  </p>
+                  <p>
+                    Player experience captures friction, delight, clarity, and felt fairness.
+                    Balance measures the health of viable strategies, role diversity, and exploit
+                    pressure. Retention translates design satisfaction into return behavior over
+                    time, while revenue reveals how progression, reward design, and offers influence
+                    the commercial layer. Service &amp; operations adds the infrastructure view:
+                    queue stability, moderation load, server pressure, and support burden.
+                  </p>
+
+                  <div class="metrics-grid" aria-label="Five core game metrics">
+                    <article class="metric-chip">
+                      <h4>Player Experience</h4>
+                      <p>How satisfying, legible, and responsive the game feels in play.</p>
+                    </article>
+                    <article class="metric-chip">
+                      <h4>Game Balance</h4>
+                      <p>How fairly power, counterplay, and strategic variety are distributed.</p>
+                    </article>
+                    <article class="metric-chip">
+                      <h4>Retention</h4>
+                      <p>How reliably players return after the first sessions, weeks, and updates.</p>
+                    </article>
+                    <article class="metric-chip">
+                      <h4>Revenue</h4>
+                      <p>How the economy and content mix influence monetization without distortion.</p>
+                    </article>
+                    <article class="metric-chip">
+                      <h4>Service &amp; Ops</h4>
+                      <p>How resilient the live game remains under technical and social load.</p>
+                    </article>
+                  </div>
+
+                  <p>
+                    What makes this five-part scorecard valuable is its refusal to separate design
+                    craft from platform realities. A smarter system does not simply ask whether a
+                    tweak increases engagement. It asks whether the same tweak improves engagement
+                    without destabilizing balance, overloading operations, or creating extractive
+                    monetization pressure.
+                  </p>
+                </div>
+
+                <aside>
+                  <blockquote class="pull-quote">
+                    "Prediction is valuable only when it makes trade-offs legible."
+                  </blockquote>
+                  <p class="section-aside-note">
+                    The metrics turn AI into a decision-support surface for cross-functional teams,
+                    not just a balancing utility for designers.
+                  </p>
+                </aside>
+              </div>
+            </article>
+
+            <hr class="section-rule" aria-hidden="true">
+
+            <article class="system-section reveal system-anchor" id="generative-outputs" data-toc="generative-outputs">
+              <div class="system-section-header">
+                <span class="eyebrow">04</span>
+                <h2>Generative Outputs</h2>
+              </div>
+
+              <div class="system-section-grid">
+                <div class="system-copy">
+                  <p>
+                    Once the system has modeled likely outcomes, it can move from interpretation to
+                    generation. That does not mean fully autonomous authorship. Instead, AI becomes
+                    capable of proposing modifications to an existing game world, drafting level
+                    layouts, creating item variants, adjusting matchmaking logic, and reshaping quest
+                    structures for different cohorts of players. Each proposal is grounded in the
+                    same evidence base used during prediction.
+                  </p>
+                  <p>
+                    Some outputs are clearly player-facing: personalized quest lines, adaptive enemy
+                    scaling, or new item drops calibrated to behavioral profiles. Others sit deeper
+                    in the live-service stack, where the system can recommend server allocation,
+                    optimize anti-cheat thresholds, or flag suspicious economies before they distort
+                    a season. The important point is that generation extends beyond art assets or
+                    procedural maps; it reaches into the orchestration layer of the game itself.
+                  </p>
+                  <p>
+                    In a mature workflow, these outputs would be editable, ranked, and auditable. A
+                    designer could compare multiple AI-generated world states, a live-ops team could
+                    simulate matchmaking changes before rollout, and a balance lead could inspect why
+                    one recommendation was favored over another. The system is most useful when it
+                    speeds up iteration while preserving review, taste, and accountability.
+                  </p>
+                </div>
+
+                <aside>
+                  <blockquote class="pull-quote">
+                    "Generative systems work best as collaborators: fast enough to propose,
+                    transparent enough to revise."
+                  </blockquote>
+                  <p class="section-aside-note">
+                    The goal is not replacement. The goal is a shorter loop between observation,
+                    synthesis, testing, and deployment.
+                  </p>
+                </aside>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MY CONTRIBUTION -->
+    <section class="screen screen-contribution" id="contribution" aria-labelledby="contribution-title">
+      <div class="container">
+        <div class="system-header reveal">
+          <div>
+            <span class="eyebrow" style="color: var(--hermes-orange);">Project Ownership</span>
+            <h2 class="section-title" id="contribution-title">My Contribution</h2>
+            <p class="section-intro">
+              These points clarify which parts of the project are my own design and implementation work.
+            </p>
+          </div>
+          <p class="system-header-note">
+            The wording stays practical: it explains contribution scope without overstating the prototype
+            as a complete production AI system.
+          </p>
+        </div>
+
+        <div class="contribution-grid">
+          <article class="contribution-card reveal">
+            <span class="card-label">01</span>
+            <h3>Independent interface design</h3>
+            <p>I designed the overall visual language, navigation structure, section hierarchy, and dark-theme presentation style of this website.</p>
+          </article>
+          <article class="contribution-card reveal">
+            <span class="card-label">02</span>
+            <h3>System framework design</h3>
+            <p>I structured the project around three modules: adaptive difficulty, player data monitoring, and procedural content generation.</p>
+          </article>
+          <article class="contribution-card reveal">
+            <span class="card-label">03</span>
+            <h3>Dashboard prototype</h3>
+            <p>I designed the data dashboard layout, indicator categories, visual hierarchy, and example metrics for evaluating player behaviour.</p>
+          </article>
+          <article class="contribution-card reveal">
+            <span class="card-label">04</span>
+            <h3>Literature and case mapping</h3>
+            <p>I reviewed recent studies and industry cases related to game AI, telemetry, procedural content generation, and AI-driven NPC systems.</p>
+          </article>
+          <article class="contribution-card reveal">
+            <span class="card-label">05</span>
+            <h3>Front-end implementation</h3>
+            <p>I implemented the HTML, CSS, layout behaviour, responsive adaptation, anchor navigation, and interactive presentation effects.</p>
+          </article>
+          <article class="contribution-card reveal">
+            <span class="card-label">06</span>
+            <h3>Critical reflection</h3>
+            <p>I identified current limitations of the prototype and proposed future work related to real player data, algorithm validation, and privacy-aware telemetry.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: INSIGHTS -->
+    <section class="screen screen-insights" id="insights" data-screen="insights">
+      <div class="container">
+        <div class="insights-header reveal">
+          <div>
+            <span class="eyebrow" style="color: var(--hermes-orange);">Insights</span>
+            <h2 class="section-title">A compact dashboard for the signals the system is designed to improve.</h2>
+            <p class="section-intro">
+              These visualizations translate the proposed workflow into a decision-friendly layer:
+              what data matters most, how outcomes shift under AI support, and where generative
+              effort is concentrated across the live game.
+            </p>
+          </div>
+          <p class="insights-note">
+            The charts are display-focused and intentionally restrained, mirroring the editorial
+            tone of the project while keeping the system legible at a glance.
+          </p>
+        </div>
+
+        <p class="data-note reveal">
+          Data note: Some dashboard values are simulated for demonstration purposes. They are used to show the intended analytics structure and visual design, rather than to claim completed empirical validation.
+        </p>
+
+        <div class="kpi-strip reveal" aria-label="Key project indicators">
+          <article class="kpi-card">
+            <div class="kpi-number">+34%</div>
+            <p class="kpi-label">Retention lift with AI-personalized progression</p>
+          </article>
+          <article class="kpi-card">
+            <div class="kpi-number">-62%</div>
+            <p class="kpi-label">Imbalance reports after model-guided tuning</p>
+          </article>
+          <article class="kpi-card">
+            <div class="kpi-number">5</div>
+            <p class="kpi-label">Core metrics used to evaluate each design change</p>
+          </article>
+          <article class="kpi-card">
+            <div class="kpi-number">24/7</div>
+            <p class="kpi-label">Adaptive live-service monitoring and response window</p>
+          </article>
+        </div>
+
+        <div class="charts-grid">
+          <article class="chart-card reveal">
+            <div class="chart-head">
+              <h3>The Five Core Game Metrics</h3>
+              <p class="chart-caption">
+                A radar comparison shows consistent improvement when AI is introduced as a
+                predictive and generative layer in the workflow.
+              </p>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="radarChart" aria-label="Radar chart comparing before AI and with AI"></canvas>
+            </div>
+          </article>
+
+          <article class="chart-card reveal">
+            <div class="chart-head">
+              <h3>AI Training Data Sources</h3>
+              <p class="chart-caption">
+                Player behavior receives the strongest weighting because it connects balance,
+                progression, and retention into a shared evidence base.
+              </p>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="barChart" aria-label="Horizontal bar chart of AI training data sources"></canvas>
+            </div>
+          </article>
+
+          <article class="chart-card reveal">
+            <div class="chart-head">
+              <h3>Player Retention Over 30 Days</h3>
+              <p class="chart-caption">
+                The personalized curve diverges over time, suggesting that adaptive quests and
+                system-aware tuning reduce mid-cycle drop-off.
+              </p>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="lineChart" aria-label="Line chart comparing baseline and AI-personalized retention"></canvas>
+            </div>
+          </article>
+
+          <article class="chart-card reveal">
+            <div class="chart-head">
+              <h3>Generative Output Distribution</h3>
+              <p class="chart-caption">
+                Content generation is distributed across gameplay-facing systems and operational
+                tools rather than concentrated in a single content category.
+              </p>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="doughnutChart" aria-label="Doughnut chart of generative output distribution"></canvas>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- REFERENCES -->
+    <section class="screen screen-references" id="references" aria-labelledby="references-title">
+      <div class="container">
+        <div class="system-header reveal">
+          <div>
+            <span class="eyebrow" style="color: var(--hermes-orange);">Literature &amp; Cases</span>
+            <h2 class="section-title" id="references-title">Industry and Literature References</h2>
+            <p class="section-intro">
+              The references below provide research and industry context for adaptive difficulty,
+              telemetry, procedural generation, asset generation, indie experimentation, and generative NPC systems.
+            </p>
+          </div>
+          <p class="system-header-note">
+            They are used as context for design positioning, not as evidence that this prototype has
+            already achieved the same technical maturity.
+          </p>
+        </div>
+
+        <div class="references-list">
+          <p class="reference-item reveal"><strong>[1]</strong> Rahimi, M., Moradi, H., Vahabie, A., &amp; Kebriaei, H. 2023. Continuous Reinforcement Learning-based Dynamic Difficulty Adjustment in a Visual Working Memory Game. arXiv:2308.12726.</p>
+          <p class="reference-item reveal"><strong>[2]</strong> Lu, W., Griffin, J., Sadler, T. D., Laffey, J., &amp; Goggins, S. P. 2023. Serious Game Analytics by Design: Feature Generation and Selection Using Game Telemetry and Game Metrics. Journal of Learning Analytics, 10(1), 168&ndash;188.</p>
+          <p class="reference-item reveal"><strong>[3]</strong> Farrokhi Maleki, M., &amp; Zhao, R. 2024. Procedural Content Generation in Games: A Survey with Insights on Emerging LLM Integration. Proceedings of the AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment, 20(1), 167&ndash;178.</p>
+          <p class="reference-item reveal"><strong>[4]</strong> Mao, X., Yu, W., Yamada, K. D., &amp; Zielewski, M. R. 2024. Procedural Content Generation via Generative Artificial Intelligence. arXiv:2407.09013.</p>
+          <p class="reference-item reveal"><strong>[5]</strong> Fukaya, K., Daylamani-Zad, D., &amp; Agius, H. 2023. Intelligent Generation of Graphical Game Assets: A Conceptual Framework and Systematic Review of the State of the Art. arXiv:2311.10129.</p>
+          <p class="reference-item reveal"><strong>[6]</strong> Lin&aring;ker, J., Bjarnason, E., &amp; Fagerholm, F. 2024. Pre-Release Experimentation in Indie Game Development: An Interview Survey. arXiv:2411.17183.</p>
+          <p class="reference-item reveal"><strong>[7]</strong> Ubisoft. 2024. NEO NPC: Generative AI Prototype for More Interactive NPC Narratives.</p>
+          <p class="reference-item reveal"><strong>[8]</strong> NVIDIA. 2024. ACE for Games: AI Models for Conversational and Actionable Game Characters.</p>
+          <p class="reference-item reveal"><strong>[9]</strong> Unity. 2025. Unity AI: AI Game Development Tools and Project-aware Assistant.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIMITATIONS -->
+    <section class="screen screen-limitations limitations" id="limitations" aria-labelledby="limitations-title">
+      <div class="container">
+        <div class="system-header reveal">
+          <div>
+            <span class="eyebrow" style="color: var(--hermes-orange);">Critical Reflection</span>
+            <h2 class="section-title" id="limitations-title">Project Limitations</h2>
+            <p class="section-intro">
+              The prototype is presented as a portfolio-ready system concept, not as a completed empirical or production AI system.
+            </p>
+          </div>
+          <p class="system-header-note">
+            These limitations make the project more credible by separating design intent, prototype evidence,
+            and future technical validation.
+          </p>
+        </div>
+
+        <div class="limitations-grid">
+          <article class="content-card reveal">
+            <span class="card-label">Limitation 1</span>
+            <h3>Limitation 1: Demonstration data</h3>
+            <p>Current dashboard values are mainly illustrative. The project still requires real playtesting logs to support stronger claims.</p>
+          </article>
+          <article class="content-card reveal">
+            <span class="card-label">Limitation 2</span>
+            <h3>Limitation 2: Algorithm depth</h3>
+            <p>The adaptive difficulty module is presented as a system design prototype. It has not yet been fully implemented as a reinforcement learning model or validated through controlled experiments.</p>
+          </article>
+          <article class="content-card reveal">
+            <span class="card-label">Limitation 3</span>
+            <h3>Limitation 3: PCG implementation</h3>
+            <p>The procedural content generation module currently explains the design logic. Future development should include playable generated levels or missions.</p>
+          </article>
+          <article class="content-card reveal">
+            <span class="card-label">Limitation 4</span>
+            <h3>Limitation 4: Privacy and ethics</h3>
+            <p>Player telemetry can improve design decisions, but it also requires clear consent, data minimisation, anonymisation, and transparent use of behavioural data.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FUTURE WORK -->
+    <section class="screen screen-future future-work" id="future-work" aria-labelledby="future-title">
+      <div class="container">
+        <div class="system-header reveal">
+          <div>
+            <span class="eyebrow" style="color: var(--hermes-orange);">Roadmap</span>
+            <h2 class="section-title" id="future-title">Future Work</h2>
+            <p class="section-intro">
+              The next steps move from system design and dashboard demonstration toward playable evidence and public documentation.
+            </p>
+          </div>
+          <p class="system-header-note">
+            The roadmap keeps the project practical: collect data first, then compare algorithms,
+            build a playable PCG module, and publish the portfolio package.
+          </p>
+        </div>
+
+        <div class="timeline-grid">
+          <article class="timeline-card reveal">
+            <span class="card-label">Phase 1</span>
+            <h3>Phase 1: Playtesting</h3>
+            <p>Collect small-scale player logs, including session duration, failure points, difficulty changes, and completion behaviour.</p>
+          </article>
+          <article class="timeline-card reveal">
+            <span class="card-label">Phase 2</span>
+            <h3>Phase 2: Algorithm refinement</h3>
+            <p>Compare rule-based adaptive difficulty with machine-learning or reinforcement-learning approaches.</p>
+          </article>
+          <article class="timeline-card reveal">
+            <span class="card-label">Phase 3</span>
+            <h3>Phase 3: PCG prototype</h3>
+            <p>Build a playable content generation module and test whether generated content improves replayability and engagement.</p>
+          </article>
+          <article class="timeline-card reveal">
+            <span class="card-label">Phase 4</span>
+            <h3>Phase 4: Portfolio deployment</h3>
+            <p>Publish the project with a GitHub repository, documentation, and a short demo video.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="contact-section screen" id="contact" data-screen="contact">
+    <div class="container">
+      <div class="contact-layout">
+        <div class="contact-copy reveal">
+          <span class="eyebrow" style="color: var(--tiffany-blue);">Contact</span>
+          <h2 class="section-title">Contact</h2>
+          <p>
+            Short Bio: I am interested in game AI, player experience design, and data-driven interactive systems. This project explores how AI-related methods can support adaptive gameplay, monitoring dashboards, and procedural content structures.
+          </p>
+        </div>
+
+        <address class="contact-card reveal">
+          <div class="contact-identity">
+            <span class="mosaic-mark" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+            </span>
+            <div>
+              <strong>Ashlyn_Liang</strong>
+              <small>Game AI System Designer / Web Prototype Developer</small>
+            </div>
+          </div>
+          <ul class="contact-list">
+            <li>
+              <span>Name</span>
+              Ashlyn_Liang
+            </li>
+            <li>
+              <span>Email</span>
+              <a href="mailto:18237718888@163.com">18237718888@163.com</a>
+            </li>
+            <li>
+              <span>GitHub</span>
+              <a href="https://github.com/Ashlyn412/Game-simulation.git" target="_blank" rel="noopener noreferrer">Ashlyn412/Game-simulation.git</a>
+            </li>
+          </ul>
+          <nav class="contact-section-links" aria-label="Project sections in this portfolio">
+            <span>Project sections</span>
+            <a href="#research">Research Context</a>
+            <a href="#design-rationale">Design Rationale</a>
+            <a href="#contribution">My Contribution</a>
+            <a href="#insights">Dashboard &amp; Data Note</a>
+            <a href="#references">Literature &amp; Cases</a>
+            <a href="#limitations">Project Limitations</a>
+            <a href="#future-work">Future Work</a>
+          </nav>
+        </address>
+      </div>
+      <p class="footer-line reveal">&copy; 2026 Ashlyn_Liang. AI Game System Portfolio Project.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const palette = {
+      blue: "#003153",
+      orange: "#FF6600",
+      tiffany: "#0ABAB5",
+      offWhite: "#FAFAF7",
+      gray: "#6B6B6B",
+      blueSoft: "rgba(0, 49, 83, 0.16)",
+      blueFill: "rgba(0, 49, 83, 0.30)",
+      orangeFill: "rgba(255, 102, 0, 0.28)",
+      orangeShade: "rgba(255, 102, 0, 0.70)",
+      blueShade: "rgba(0, 49, 83, 0.56)"
+    };
+
+    const navbar = document.getElementById("site-nav");
+    const navLinks = document.querySelectorAll("[data-nav-link]");
+    const revealItems = document.querySelectorAll(".reveal");
+    const screens = document.querySelectorAll("[data-screen]");
+    const tocLinks = document.querySelectorAll("[data-toc-link]");
+    const tocSections = document.querySelectorAll(".system-anchor");
+
+    const updateNavState = () => {
+      navbar.classList.toggle("scrolled", window.scrollY > 16);
+    };
+
+    updateNavState();
+    window.addEventListener("scroll", updateNavState, { passive: true });
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: "0px 0px -8% 0px"
+    });
+
+    revealItems.forEach((item) => revealObserver.observe(item));
+
+    const screenObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        const activeScreen = entry.target.dataset.screen;
+        navLinks.forEach((link) => {
+          const href = link.getAttribute("href").replace("#", "");
+          const isActive = href === activeScreen;
+          link.classList.toggle("is-active", isActive);
+          if (isActive) {
+            link.setAttribute("aria-current", "page");
+          } else {
+            link.removeAttribute("aria-current");
+          }
+        });
+      });
+    }, {
+      threshold: 0.45,
+      rootMargin: "-30% 0px -45% 0px"
+    });
+
+    screens.forEach((screen) => screenObserver.observe(screen));
+
+    const tocObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        const activeId = entry.target.id;
+        tocLinks.forEach((link) => {
+          const href = link.getAttribute("href").replace("#", "");
+          link.classList.toggle("is-active", href === activeId);
+        });
+      });
+    }, {
+      threshold: 0.45,
+      rootMargin: "-25% 0px -50% 0px"
+    });
+
+    tocSections.forEach((section) => tocObserver.observe(section));
+
+    Chart.defaults.font.family = "Inter, sans-serif";
+    Chart.defaults.color = palette.gray;
+    Chart.defaults.borderColor = palette.blueSoft;
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+    Chart.defaults.plugins.legend.labels.boxWidth = 10;
+    Chart.defaults.plugins.legend.labels.boxHeight = 10;
+    Chart.defaults.plugins.legend.labels.padding = 18;
+
+    const tooltipOptions = {
+      backgroundColor: palette.blue,
+      titleColor: palette.offWhite,
+      bodyColor: palette.offWhite,
+      borderColor: palette.blueSoft,
+      borderWidth: 1,
+      padding: 12,
+      displayColors: true
+    };
+
+    new Chart(document.getElementById("radarChart"), {
+      type: "radar",
+      data: {
+        labels: [
+          "Player Experience",
+          "Game Balance",
+          "Player Retention",
+          "Game Revenue",
+          "Service & Operations"
+        ],
+        datasets: [
+          {
+            label: "Before AI",
+            data: [58, 54, 49, 52, 47],
+            borderColor: palette.blue,
+            backgroundColor: palette.blueFill,
+            pointBackgroundColor: palette.blue,
+            pointBorderColor: palette.offWhite,
+            pointHoverBackgroundColor: palette.offWhite,
+            pointHoverBorderColor: palette.blue,
+            borderWidth: 2
+          },
+          {
+            label: "With AI",
+            data: [84, 79, 76, 72, 81],
+            borderColor: palette.orange,
+            backgroundColor: palette.orangeFill,
+            pointBackgroundColor: palette.orange,
+            pointBorderColor: palette.offWhite,
+            pointHoverBackgroundColor: palette.offWhite,
+            pointHoverBorderColor: palette.orange,
+            borderWidth: 2
+          }
+        ]
+      },
+      options: {
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: "top",
+            labels: {
+              color: palette.blue
+            }
+          },
+          tooltip: tooltipOptions
+        },
+        scales: {
+          r: {
+            angleLines: {
+              color: palette.blueSoft
+            },
+            grid: {
+              color: palette.blueSoft
+            },
+            pointLabels: {
+              color: palette.blue,
+              font: {
+                size: 12,
+                weight: 600
+              }
+            },
+            suggestedMin: 0,
+            suggestedMax: 100,
+            ticks: {
+              color: palette.gray,
+              backdropColor: palette.offWhite,
+              stepSize: 20
+            }
+          }
+        }
+      }
+    });
+
+    new Chart(document.getElementById("barChart"), {
+      type: "bar",
+      data: {
+        labels: [
+          "Match History",
+          "Player Behavior",
+          "Balance Test Records",
+          "Competitive Benchmarks"
+        ],
+        datasets: [
+          {
+            label: "Relative Weight",
+            data: [68, 92, 54, 41],
+            backgroundColor: [palette.blue, palette.orange, palette.blue, palette.blue],
+            borderRadius: 6,
+            barThickness: 22
+          }
+        ]
+      },
+      options: {
+        indexAxis: "y",
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: tooltipOptions
+        },
+        scales: {
+          x: {
+            grid: {
+              color: palette.blueSoft
+            },
+            ticks: {
+              color: palette.gray
+            }
+          },
+          y: {
+            grid: {
+              display: false
+            },
+            ticks: {
+              color: palette.blue,
+              font: {
+                weight: 600
+              }
+            }
+          }
+        }
+      }
+    });
+
+    const dayLabels = Array.from({ length: 30 }, (_, index) => `Day ${index + 1}`);
+    const baselineRetention = [
+      100, 94, 89, 85, 81, 77, 73, 70, 67, 64,
+      61, 58, 56, 54, 51, 49, 47, 45, 43, 41,
+      39, 37, 35, 34, 33, 32, 31, 30, 29, 28
+    ];
+    const personalizedRetention = [
+      100, 96, 93, 90, 88, 85, 83, 81, 79, 77,
+      76, 74, 72, 71, 69, 67, 66, 64, 63, 61,
+      60, 58, 57, 55, 54, 52, 51, 49, 48, 46
+    ];
+    const keyPointData = personalizedRetention.map((value, index) => {
+      const highlighted = [0, 6, 13, 20, 29].includes(index);
+      return highlighted ? value : null;
+    });
+
+    new Chart(document.getElementById("lineChart"), {
+      type: "line",
+      data: {
+        labels: dayLabels,
+        datasets: [
+          {
+            label: "Baseline Game",
+            data: baselineRetention,
+            borderColor: palette.blue,
+            backgroundColor: palette.blueFill,
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.32
+          },
+          {
+            label: "AI-Personalized",
+            data: personalizedRetention,
+            borderColor: palette.orange,
+            backgroundColor: palette.orangeFill,
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.32
+          },
+          {
+            label: "Key Moments",
+            data: keyPointData,
+            borderColor: palette.tiffany,
+            backgroundColor: palette.tiffany,
+            pointBackgroundColor: palette.tiffany,
+            pointBorderColor: palette.offWhite,
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            pointHoverRadius: 5,
+            showLine: false
+          }
+        ]
+      },
+      options: {
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              filter: (item) => item.text !== "Key Moments"
+            }
+          },
+          tooltip: tooltipOptions
+        },
+        scales: {
+          x: {
+            grid: {
+              display: false
+            },
+            ticks: {
+              color: palette.gray,
+              maxTicksLimit: 6
+            }
+          },
+          y: {
+            grid: {
+              color: palette.blueSoft
+            },
+            ticks: {
+              color: palette.gray,
+              callback: (value) => `${value}%`
+            },
+            suggestedMin: 20,
+            suggestedMax: 100
+          }
+        }
+      }
+    });
+
+    new Chart(document.getElementById("doughnutChart"), {
+      type: "doughnut",
+      data: {
+        labels: [
+          "Level Auto-Generation",
+          "Item Creation",
+          "Matchmaking",
+          "Anti-Cheat",
+          "Personalized Quests"
+        ],
+        datasets: [
+          {
+            data: [28, 17, 21, 12, 22],
+            backgroundColor: [
+              palette.orange,
+              palette.blue,
+              palette.tiffany,
+              palette.orangeShade,
+              palette.blueShade
+            ],
+            borderColor: palette.offWhite,
+            borderWidth: 3,
+            hoverOffset: 4
+          }
+        ]
+      },
+      options: {
+        maintainAspectRatio: false,
+        cutout: "62%",
+        plugins: {
+          tooltip: tooltipOptions
+        }
+      }
+    });
+  </script>
+</body>
+</html>
